@@ -4,21 +4,21 @@ const villains = [
   {
     name: "Green Goblin",
     alterEgo: "Norman Osborn",
-    quote: "We are who we choose to be... NOW CHOOSE!",
+    quote: "Jesteśmy tym, kim wybieramy być... TERAZ WYBIERAJ!",
     image: "/green-goblin.png",
     color: "#22c55e",
   },
   {
     name: "Doctor Octopus",
     alterEgo: "Otto Octavius",
-    quote: "The power of the sun, in the palm of my hand.",
+    quote: "Moc słońca w dłoni mojej ręki.",
     image: "/doctor-octopus.png",
     color: "#f97316",
   },
   {
     name: "Venom",
     alterEgo: "Eddie Brock",
-    quote: "We are Venom.",
+    quote: "Jesteśmy Venomem.",
     image: "/venom.png",
     color: "#e0e0e0",
   },
@@ -34,12 +34,12 @@ export function Villains() {
           viewport={{ once: true }}
           className="mb-20"
         >
-          <p className="text-xs uppercase tracking-[0.4em] text-primary font-sans mb-3">Enemies of the Spider</p>
+          <p className="text-xs uppercase tracking-[0.4em] text-primary font-sans mb-3">Wrogowie Pająka</p>
           <h2
             className="text-6xl md:text-8xl font-display uppercase tracking-tighter"
             style={{ color: "#22c55e", textShadow: "0 0 40px rgba(34,197,94,0.4)" }}
           >
-            Rogues Gallery
+            Galeria złoczyńców
           </h2>
         </motion.div>
 

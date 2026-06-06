@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "framer-motion";
+import { playNarrator, stopNarrator } from "@/lib/narratorAudio";
 
 const suits = [
   {
@@ -322,6 +323,17 @@ function Card3D({ suit }: { suit: typeof suits[0] }) {
 export function SuitSelector() {
   const [selected, setSelected] = useState(0);
   const suit = suits[selected];
+  const [narPlaying, setNarPlaying] = useState(false);
+
+  const toggleNarrator = () => {
+    if (narPlaying) {
+      stopNarrator();
+      setNarPlaying(false);
+    } else {
+      playNarrator("/suits-narrator.wav", () => setNarPlaying(false), () => setNarPlaying(false));
+      setNarPlaying(true);
+    }
+  };
 
   return (
     <section className="py-24 px-6 md:px-16 bg-background relative overflow-hidden" data-testid="section-suit-selector">
@@ -340,6 +352,25 @@ export function SuitSelector() {
           <p className="text-xs uppercase tracking-[0.4em] text-primary font-sans mb-3">Wybierz Swój Strój</p>
           <h2 className="text-5xl md:text-7xl font-display uppercase mb-4">Selektor Kostiumów</h2>
           <div className="h-px w-24 mx-auto" style={{ background: suit.color, transition: "background 0.5s" }} />
+          <button
+            onClick={toggleNarrator}
+            className="mt-6 flex items-center gap-3 mx-auto px-5 py-2.5 rounded-full border border-primary/50 bg-black/60 hover:bg-primary/20 transition-colors text-sm uppercase tracking-widest font-sans"
+          >
+            {narPlaying ? (
+              <>
+                <span className="w-3 h-3 flex gap-0.5">
+                  <span className="w-1 h-3 bg-primary rounded-sm" />
+                  <span className="w-1 h-3 bg-primary rounded-sm" />
+                </span>
+                <span className="text-primary">Zatrzymaj</span>
+              </>
+            ) : (
+              <>
+                <span className="w-0 h-0 border-y-4 border-y-transparent border-l-8 border-l-primary" />
+                <span className="text-primary">Posłuchaj</span>
+              </>
+            )}
+          </button>
         </motion.div>
 
         <div className="flex flex-col lg:flex-row gap-8 items-stretch min-h-[600px]">

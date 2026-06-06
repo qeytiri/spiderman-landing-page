@@ -241,7 +241,7 @@ function EventCard({
                   animate={{ x: isSelected ? (isEven ? -4 : 4) : 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {isSelected ? "— Less" : isEven ? "Read More —" : "— Read More"}
+                  {isSelected ? "— Mniej" : isEven ? "Czytaj Więcej —" : "— Czytaj Więcej"}
                 </motion.span>
               </div>
             </div>
@@ -301,27 +301,17 @@ export function Timeline() {
       className="py-24 px-6 md:px-16 bg-background relative overflow-hidden"
       data-testid="section-timeline"
     >
-      <div className="absolute inset-0 pointer-events-none">
-        <svg className="absolute inset-0 w-full h-full opacity-5" viewBox="0 0 800 800" fill="none">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <circle key={i} cx="400" cy="400" r={60 + i * 70} stroke="white" strokeWidth="0.5" />
-          ))}
-          {Array.from({ length: 8 }).map((_, i) => {
-            const a = (i / 8) * Math.PI * 2;
-            return (
-              <line
-                key={i}
-                x1="400"
-                y1="400"
-                x2={400 + Math.cos(a) * 500}
-                y2={400 + Math.sin(a) * 500}
-                stroke="white"
-                strokeWidth="0.5"
-              />
-            );
-          })}
-        </svg>
-      </div>
+     <div className="absolute inset-0 pointer-events-none overflow-hidden">
+  <video
+    className="absolute inset-0 w-full h-full object-cover opacity-15"
+    src="/spider-movie-2.mp4"
+    autoPlay
+    loop
+    muted
+    playsInline
+  />
+  <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, #0a0a0f 0%, transparent 15%, transparent 85%, #0a0a0f 100%)" }} />
+</div>
 
       <div className="max-w-5xl mx-auto">
         <motion.div

@@ -5,3 +5,5 @@ dist/
 .env
 *.local
 public/*-compressed.jpg
+piper_tmp/
+narrator_text.txt

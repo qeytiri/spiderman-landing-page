@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { playNarrator, stopNarrator } from "@/lib/narratorAudio";
 
 const container = {
   hidden: { opacity: 0 },
@@ -16,6 +17,17 @@ const item = {
 
 
 export function Origin() {
+  const [narPlaying, setNarPlaying] = useState(false);
+
+  const toggleNarrator = () => {
+    if (narPlaying) {
+      stopNarrator();
+      setNarPlaying(false);
+    } else {
+      playNarrator("/origin-narrator.wav", () => setNarPlaying(false), () => setNarPlaying(false));
+      setNarPlaying(true);
+    }
+  };
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const bgY = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
@@ -25,8 +37,8 @@ export function Origin() {
   return (
     <section
       ref={ref}
-      className="relative min-h-screen py-28 px-6 md:px-20 overflow-hidden"
-      style={{ background: "linear-gradient(to bottom, #0a0a0f 0%, #0c0610 50%, #0a0a0f 100%)" }}
+      className="relative min-h-screen py-28 px-6 md:px-20 overflow-hidden -mt-56 z-10"
+      style={{ background: "linear-gradient(to bottom, transparent 0%, #0c0610 25%, #0a0a0f 100%)" }}
     >
       <motion.div
         className="absolute inset-0 pointer-events-none"
@@ -61,6 +73,28 @@ export function Origin() {
           <motion.p variants={item} className="text-lg md:text-xl text-gray-400 leading-relaxed mb-12">
             Przyjmując imię Spider-Man, Peter liczył na karierę z wykorzystaniem nowych mocy. Nauczony, że wraz z wielką mocą przychodzi wielka odpowiedzialność, Spider-Man poprzysiągł służyć ludziom.
           </motion.p>
+
+          <motion.div variants={item} className="mb-10">
+            <button
+              onClick={toggleNarrator}
+              className="flex items-center gap-3 px-5 py-2.5 rounded-full border border-primary/50 bg-black/50 hover:bg-primary/20 transition-colors text-sm uppercase tracking-widest font-sans"
+            >
+              {narPlaying ? (
+                <>
+                  <span className="w-3 h-3 flex gap-0.5">
+                    <span className="w-1 h-3 bg-primary rounded-sm" />
+                    <span className="w-1 h-3 bg-primary rounded-sm" />
+                  </span>
+                  <span className="text-primary">Zatrzymaj</span>
+                </>
+              ) : (
+                <>
+                  <span className="w-0 h-0 border-y-4 border-y-transparent border-l-8 border-l-primary" />
+                  <span className="text-primary">Posłuchaj historii</span>
+                </>
+              )}
+            </button>
+          </motion.div>
 
           <motion.blockquote variants={item} className="border-l-4 border-primary pl-6 py-2">
             <p className="text-2xl md:text-3xl font-display italic text-white">

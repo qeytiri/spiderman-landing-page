@@ -1,5 +1,6 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
+import { useRef, useState } from "react";
+import { playNarrator, stopNarrator } from "@/lib/narratorAudio";
 
 const quotes = [
   {
@@ -18,45 +19,56 @@ const quotes = [
 
 export function Quotes() {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"]
-  });
+  const [narPlaying, setNarPlaying] = useState(false);
 
-  const y1 = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [-100, 100]);
+  const toggleNarrator = () => {
+    if (narPlaying) {
+      stopNarrator();
+      setNarPlaying(false);
+    } else {
+      playNarrator("/quotes-narrator.wav", () => setNarPlaying(false), () => setNarPlaying(false));
+      setNarPlaying(true);
+    }
+  };
 
   return (
     <section ref={ref} className="py-32 px-6 md:px-20 bg-background relative overflow-hidden">
-      <motion.svg
-        style={{ y: y1 }}
-        className="absolute top-0 left-0 w-full md:w-1/2 h-full opacity-5 pointer-events-none"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-      >
-        <path d="M0,0 L100,100 M0,50 L100,50 M50,0 L50,100 M0,100 L100,0" stroke="currentColor" strokeWidth="0.5" fill="none" />
-        <circle cx="50" cy="50" r="10" stroke="currentColor" strokeWidth="0.5" fill="none" />
-        <circle cx="50" cy="50" r="20" stroke="currentColor" strokeWidth="0.5" fill="none" />
-        <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="0.5" fill="none" />
-        <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="0.5" fill="none" />
-      </motion.svg>
-
-      <motion.div
-        style={{ y: y2 }}
-        className="absolute top-0 right-0 w-64 h-64 opacity-5 pointer-events-none"
-      >
-        <svg viewBox="0 0 200 200" fill="none" stroke="white" strokeWidth="0.5">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <circle key={i} cx="100" cy="100" r={20 + i * 20} />
-          ))}
-          {Array.from({ length: 8 }).map((_, i) => {
-            const a = (i / 8) * Math.PI * 2;
-            return <line key={i} x1="100" y1="100" x2={100 + Math.cos(a) * 120} y2={100 + Math.sin(a) * 120} />;
-          })}
-        </svg>
-      </motion.div>
+      {/* Tło - pajęcza sieć */}
+      <div
+        className="absolute inset-0 bg-center bg-cover pointer-events-none"
+        style={{ backgroundImage: "url('/quotes.png')", opacity: 0.18 }}
+      />
+      {/* Vignette - przyciemnienie krawędzi */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 30%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.97) 100%)" }}
+      />
+      {/* Górna i dolna krawędź */}
+      <div className="absolute inset-x-0 top-0 h-32 pointer-events-none" style={{ background: "linear-gradient(to bottom, #0a0a0f, transparent)" }} />
+      <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none" style={{ background: "linear-gradient(to top, #0a0a0f, transparent)" }} />
 
       <div className="max-w-4xl mx-auto relative z-10 flex flex-col gap-24">
+        <div className="flex justify-center">
+          <button
+            onClick={toggleNarrator}
+            className="flex items-center gap-3 px-5 py-2.5 rounded-full border border-primary/50 bg-black/60 hover:bg-primary/20 transition-colors text-sm uppercase tracking-widest font-sans"
+          >
+            {narPlaying ? (
+              <>
+                <span className="w-3 h-3 flex gap-0.5">
+                  <span className="w-1 h-3 bg-primary rounded-sm" />
+                  <span className="w-1 h-3 bg-primary rounded-sm" />
+                </span>
+                <span className="text-primary">Zatrzymaj</span>
+              </>
+            ) : (
+              <>
+                <span className="w-0 h-0 border-y-4 border-y-transparent border-l-8 border-l-primary" />
+                <span className="text-primary">Posłuchaj</span>
+              </>
+            )}
+          </button>
+        </div>
         {quotes.map((quote, index) => (
           <motion.div
             key={index}

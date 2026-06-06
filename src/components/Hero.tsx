@@ -17,15 +17,20 @@ export function Hero() {
   return (
     <section ref={ref} className="relative h-[150vh] w-full overflow-hidden bg-black">
       <motion.div className="absolute inset-0 z-0" style={{ y: yBg }}>
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url('/hero-bg.png')`, opacity: 0.35 }}
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src="/spider-movie.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{ opacity: 0.65 }}
         />
         <motion.div
           className="absolute inset-0"
           style={{
             opacity: overlayOpacity,
-            background: "linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 40%, rgba(10,10,15,0.95) 85%, #0a0a0f 100%)",
+            background: "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 40%, rgba(10,10,15,0.85) 80%, #0a0a0f 100%)",
           }}
         />
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(180,0,0,0.08), transparent 70%)" }} />

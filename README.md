@@ -25,7 +25,3 @@ Kinematyczna strona poświęcona Spider-Manowi w języku polskim — zbudowana z
 pnpm install
 pnpm --filter @workspace/spiderman run dev
 ```
-
-## Demo
-
-Projekt stworzony na [Replit](https://replit.com).
